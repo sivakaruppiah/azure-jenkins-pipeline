@@ -26,6 +26,11 @@ pipeline {
         }
     stage('TF Plan') {
       steps {
+                // login Azure
+                  withCredentials([azureServicePrincipal('server-principal')]) {
+                  sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
+                  }
+               // get publish settings        
         sh 'terraform init'
         sh 'terraform plan -out myplan'
       }      
@@ -41,6 +46,11 @@ pipeline {
 
     stage('TF Apply') {
       steps {
+                // login Azure
+                  withCredentials([azureServicePrincipal('server-principal')]) {
+                  sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
+                  }
+               // get publish settings        
         sh 'terraform apply -input=false myplan'
       
       }
