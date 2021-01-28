@@ -27,7 +27,7 @@ pipeline {
 
 
 
-    stage('init') {
+    stage('plan') {
       steps {  
         sh '''export ARM_CLIENT_ID="4e7c311e-0bad-4c62-a960-fae95d64609f"
               export ARM_CLIENT_SECRET="DLEs978XWH99CqQm~2ZuV~NlULKAbYG~Vq"
@@ -38,7 +38,7 @@ pipeline {
     }
 
 
-    stage('init') {
+    stage('apply') {
       steps {  
         sh '''export ARM_CLIENT_ID="4e7c311e-0bad-4c62-a960-fae95d64609f"
               export ARM_CLIENT_SECRET="DLEs978XWH99CqQm~2ZuV~NlULKAbYG~Vq"
