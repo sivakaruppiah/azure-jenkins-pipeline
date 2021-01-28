@@ -15,46 +15,38 @@ pipeline {
       }
     }
 
-    stage('Deploy') {
-            steps {
-                // login Azure
-                  withCredentials([azureServicePrincipal('server-principal')]) {
-                  sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
-                  }
-               // get publish settings
-            }
-        }
-    stage('TF Plan') {
-      steps {
-                // login Azure
-                  withCredentials([azureServicePrincipal('server-principal')]) {
-                  sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
-                  }
-               // get publish settings        
-        sh 'terraform init'
-        sh 'terraform plan -out myplan'
-      }      
+
+
+  stages {
+
+    stage('init') {
+    sh '''export ARM_CLIENT_ID="4e7c311e-0bad-4c62-a960-fae95d64609f"
+          export ARM_CLIENT_SECRET="DLEs978XWH99CqQm~2ZuV~NlULKAbYG~Vq"
+          export ARM_SUBSCRIPTION_ID="423777e6-d2d1-4457-be29-3d98b3cd537c"
+          export ARM_TENANT_ID="17c6997b-f6d9-4a44-8ddd-800751c7ebdd"
+          terraform init'''
     }
 
-    stage('Approval') {
-      steps {
-        script {
-          def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
-        }
-      }
+
+    stage('init') {
+    sh '''export ARM_CLIENT_ID="4e7c311e-0bad-4c62-a960-fae95d64609f"
+          export ARM_CLIENT_SECRET="DLEs978XWH99CqQm~2ZuV~NlULKAbYG~Vq"
+          export ARM_SUBSCRIPTION_ID="423777e6-d2d1-4457-be29-3d98b3cd537c"
+          export ARM_TENANT_ID="17c6997b-f6d9-4a44-8ddd-800751c7ebdd"
+          terraform plan'''
     }
 
-    stage('TF Apply') {
-      steps {
-                // login Azure
-                  withCredentials([azureServicePrincipal('server-principal')]) {
-                  sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
-                  }
-               // get publish settings        
-        sh 'terraform apply -input=false myplan'
-      
-      }
+
+    stage('init') {
+    sh '''export ARM_CLIENT_ID="4e7c311e-0bad-4c62-a960-fae95d64609f"
+          export ARM_CLIENT_SECRET="DLEs978XWH99CqQm~2ZuV~NlULKAbYG~Vq"
+          export ARM_SUBSCRIPTION_ID="423777e6-d2d1-4457-be29-3d98b3cd537c"
+          export ARM_TENANT_ID="17c6997b-f6d9-4a44-8ddd-800751c7ebdd"
+          terraform apply -auto-approve'''
     }
+
+
+    
 
   } 
 
