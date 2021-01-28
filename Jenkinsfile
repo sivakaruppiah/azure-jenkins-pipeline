@@ -1,17 +1,31 @@
 pipeline {
 
-  agent { label 'kubepod' }
-  environment {
-    SECRET_KEY = credentials('secret-key')
-  }
+
+  
+  agent {
+    node {
+        label 'k8-worker-02'
+        
+    }
+}
+
   stages {
 
     stage('Checkout Source') {
       steps {
-        git url:'https://github.com/sivakaruppiah/terraform-sqlserver.git', branch:'master'
+        git url:'https://github.com/sivakaruppiah/azure-jenkins-pipeline.git', branch:'master'
       }
     }
 
+    stage('Deploy') {
+            steps {
+                // login Azure
+                  withCredentials([azureServicePrincipal('server-principal')]) {
+                  sh 'az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET -t $AZURE_TENANT_ID'
+                  }
+               // get publish settings
+            }
+        }
     stage('TF Plan') {
       steps {
         container('terraform') {
