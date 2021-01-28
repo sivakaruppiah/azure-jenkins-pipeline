@@ -1,7 +1,5 @@
 pipeline {
 
-
-  
   agent {
     node {
         label 'k8-worker-02'
@@ -28,10 +26,8 @@ pipeline {
         }
     stage('TF Plan') {
       steps {
-        container('terraform') {
-          sh 'terraform init'
-          sh 'terraform plan -out myplan'
-        }
+        sh 'terraform init'
+        sh 'terraform plan -out myplan'
       }      
     }
 
@@ -45,9 +41,8 @@ pipeline {
 
     stage('TF Apply') {
       steps {
-        container('terraform') {
-          sh 'terraform apply -input=false myplan'
-        }
+        sh 'terraform apply -input=false myplan'
+      
       }
     }
 
