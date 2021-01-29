@@ -49,9 +49,12 @@ pipeline {
             // login Azure
                   withCredentials([azureServicePrincipal('server-principal'), string(credentialsId: 'access_key', variable: 'AZURE_ACCESS_KEY')]) {
                         sh """
-                        
+                        export ARM_CLIENT_ID=$AZURE_CLIENT_ID
+                        export ARM_CLIENT_SECRET=$AZURE_CLIENT_SECRET
+                        export ARM_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
+                        export ARM_TENANT_ID=$AZURE_TENANT_ID
                         echo "Creating Terraform Plan"
-                        terraform plan -var "ARM_CLIENT_ID=$AZURE_CLIENT_ID" -var "ARM_CLIENT_SECRET=$AZURE_CLIENT_SECRET" -var "ARM_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID" -var "ARM_TENANT_ID=$AZURE_TENANT_ID"
+                        terraform plan 
                         """
                   }
                // get publish settings 
@@ -76,8 +79,12 @@ pipeline {
             // login Azure
                   withCredentials([azureServicePrincipal('server-principal'), string(credentialsId: 'access_key', variable: 'AZURE_ACCESS_KEY')]) {
                         sh """
+                        export ARM_CLIENT_ID=$AZURE_CLIENT_ID
+                        export ARM_CLIENT_SECRET=$AZURE_CLIENT_SECRET
+                        export ARM_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
+                        export ARM_TENANT_ID=$AZURE_TENANT_ID
                         echo "Applying the plan"
-                        terraform apply -auto-approve -var "ARM_CLIENT_ID=$AZURE_CLIENT_ID" -var "ARM_CLIENT_SECRET=$AZURE_CLIENT_SECRET" -var "ARM_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID" -var "ARM_TENANT_ID=$AZURE_TENANT_ID"
+                        terraform apply -auto-approve 
                         """
                   }
                // get publish settings 
