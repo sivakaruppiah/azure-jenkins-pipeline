@@ -19,11 +19,11 @@ pipeline {
       steps { 
             // login Azure
                   withCredentials([azureServicePrincipal('server-principal'), string(credentialsId: 'access_key', variable: 'AZURE_ACCESS_KEY')]) {
-                  sh """
+                  sh '''
 
                         echo "Initialising Terraform"
                         terraform init -backend-config="access_key=$AZURE_ACCESS_KEY"
-                        """
+                        '''
                   }
                // get publish settings 
         
@@ -34,10 +34,10 @@ pipeline {
       steps { 
             // login Azure
                   withCredentials([azureServicePrincipal('server-principal'), string(credentialsId: 'access_key', variable: 'AZURE_ACCESS_KEY')]) {
-                         sh """
+                         sh '''
                                 
                         terraform validate
-                        """                  }
+                        '''                 }
                // get publish settings 
         
        }   
@@ -48,14 +48,14 @@ pipeline {
       steps { 
             // login Azure
                   withCredentials([azureServicePrincipal('server-principal'), string(credentialsId: 'access_key', variable: 'AZURE_ACCESS_KEY')]) {
-                        sh """
+                        sh '''
                         export ARM_CLIENT_ID=$AZURE_CLIENT_ID
                         export ARM_CLIENT_SECRET=$AZURE_CLIENT_SECRET
                         export ARM_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
                         export ARM_TENANT_ID=$AZURE_TENANT_ID
                         echo "Creating Terraform Plan"
                         terraform plan 
-                        """
+                        '''
                   }
                // get publish settings 
         
@@ -78,14 +78,14 @@ pipeline {
       steps {  
             // login Azure
                   withCredentials([azureServicePrincipal('server-principal'), string(credentialsId: 'access_key', variable: 'AZURE_ACCESS_KEY')]) {
-                        sh """
+                        sh '''
                         export ARM_CLIENT_ID=$AZURE_CLIENT_ID
                         export ARM_CLIENT_SECRET=$AZURE_CLIENT_SECRET
                         export ARM_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
                         export ARM_TENANT_ID=$AZURE_TENANT_ID
                         echo "Applying the plan"
                         terraform apply -auto-approve 
-                        """
+                        '''
                   }
                // get publish settings 
        }   
