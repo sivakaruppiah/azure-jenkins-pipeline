@@ -18,12 +18,12 @@ pipeline {
     stage('init') {
       steps { 
             // login Azure
-                  withCredentials([azureServicePrincipal('server-principal')]) {
+                  withCredentials([azureServicePrincipal('server-principal'), string(credentialsId: 'access_key', variable: 'ARM_ACCESS_KEY')]) {
                   sh '''export ARM_CLIENT_ID=$AZURE_CLIENT_ID
                         export ARM_CLIENT_SECRET=$AZURE_CLIENT_SECRET
                         export ARM_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
                         export ARM_TENANT_ID=$AZURE_TENANT_ID
-                        terraform init'''
+                        terraform init -backend-config="access_key=$ARM_ACCESS_KEY" '''
                   }
                // get publish settings 
         
@@ -31,6 +31,7 @@ pipeline {
     }
 
     
+
 
     stage('plan') {
       steps {  
@@ -53,7 +54,7 @@ pipeline {
                   withCredentials([azureServicePrincipal('server-principal')]) {
                   sh '''export ARM_CLIENT_ID=$AZURE_CLIENT_ID
                         export ARM_CLIENT_SECRET=$AZURE_CLIENT_SECRET
-                        export ARM_SUBSCRIPTION_ID=$AZURE_SUBSCRIPTION_ID
+                        export ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID
                         export ARM_TENANT_ID=$AZURE_TENANT_ID
                         terraform apply -auto-approve'''
                   }
