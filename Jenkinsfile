@@ -1,11 +1,6 @@
 pipeline {
 
-  agent {
-    node {
-        label 'k8-worker-02'
-        
-    }
-}
+agent { label 'terraform' }
 
   stages {
 
