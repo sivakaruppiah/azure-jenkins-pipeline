@@ -24,7 +24,7 @@ pipeline{
                   sh '''
 
                         echo "Initialising Terraform"
-                        terraform init -backend-config="access_key=$AZURE_ACCESS_KEY"
+                        terraform init 
                         '''
                   }
                // get publish settings 
