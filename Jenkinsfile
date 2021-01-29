@@ -1,5 +1,11 @@
-pipeline{
-    agent { label 'terraform' }
+pipeline {
+
+  agent {
+    node {
+        label 'k8-worker-02'
+        
+    }
+}
 
   stages {
 
@@ -16,7 +22,7 @@ pipeline{
                   sh '''
 
                         echo "Initialising Terraform"
-                        terraform init 
+                        terraform init -backend-config="access_key=$AZURE_ACCESS_KEY"
                         '''
                   }
                // get publish settings 
