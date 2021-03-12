@@ -2,7 +2,7 @@ pipeline {
 
   agent {
     node {
-        label 'k8-worker-02'
+        label 'slave'
         
     }
 }
